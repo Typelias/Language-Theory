@@ -14,22 +14,7 @@ std::string program{"99+1001"};
 
 std::string::iterator consume = program.begin();
 
-void lex(){
-    if(consume == program.end()) {
-        t = end_of_program;
-        return;
-    }
-    lexeme = *consume++;
-    switch (lexeme)
-    {
-    case '+':
-        t= plus;    
-        break;
-    default:
-        t = integer;
-        break;
-    }
-}
+
 
 struct op{
     std::vector<op*> children;
@@ -61,14 +46,30 @@ struct op_int:op{
 
         return result;
     }
-
-    
 };
 struct op_add:op{
     int eval() override{
         return children[0]->eval() + children[1]->eval();
     }
 };
+
+
+void lex(){
+    if(consume == program.end()) {
+        t = end_of_program;
+        return;
+    }
+    lexeme = *consume++;
+    switch (lexeme)
+    {
+    case '+':
+        t= plus;    
+        break;
+    default:
+        t = integer;
+        break;
+    }
+}
 
 
 op_int* parse_integer(){
